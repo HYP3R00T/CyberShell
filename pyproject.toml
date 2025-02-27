@@ -6,9 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 license = { file = "LICENSE" }
 authors = [{ name = "Hyperoot", email = "rajesh@hyperoot.dev" }]
-dependencies = [
-    "bump-my-version>=0.32.2",
-]
+dependencies = []
 
 [build-system]
 requires = ["hatchling"]

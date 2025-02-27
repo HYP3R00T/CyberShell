@@ -1,13 +1,15 @@
 name: Build and Release
 
 on:
-  push:
-    branches:
-    - main
+  # push:
+  #   branches:
+  #   - main
+  workflow_dispatch:
+
 
 jobs:
   build:
-    if: startsWith(github.event.head_commit.message, 'pub')
+    # if: startsWith(github.event.head_commit.message, 'pub')
     runs-on: ubuntu-latest
     steps:
     # Check out the repository with full history for version detection
@@ -40,18 +42,3 @@ jobs:
       env:
         PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       run: uv publish --username __token__ --password $PYPI_TOKEN
-
-    # Bump the version using bump-my-version tool from the virtual environment
-    - name: Bump Version
-      run: ./.venv/bin/bump-my-version bump minor --allow-dirty
-
-    # Commit and push the updated version files (e.g. pyproject.toml and uv.lock)
-    - name: Commit version change
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add pyproject.toml
-        git commit -m "Bump version"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
