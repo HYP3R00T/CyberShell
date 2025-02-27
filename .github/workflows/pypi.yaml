@@ -15,6 +15,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        persist-credentials: true
 
     # Set up uv
     - name: Install uv
@@ -26,7 +27,7 @@ jobs:
       with:
         python-version-file: ".python-version"
 
-    # Install project dependencies
+    # Install project dependencies (creates virtual environment at .venv)
     - name: Install the project
       run: uv sync --all-extras --dev
 
@@ -40,17 +41,17 @@ jobs:
         PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       run: uv publish --username __token__ --password $PYPI_TOKEN
 
-    # Bump the version using bump-my-version tool
+    # Bump the version using bump-my-version tool from the virtual environment
     - name: Bump Version
       run: ./.venv/bin/bump-my-version bump minor --allow-dirty
 
     # Commit and push the updated version files (e.g. pyproject.toml and uv.lock)
-    - name: Commit bumped version
+    - name: Commit version change
       run: |
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-        git add pyproject.toml uv.lock
-        git commit -m "Bump version via bump-my-version [skip ci]" || echo "No changes to commit"
-        git push origin HEAD:main
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add pyproject.toml
+        git commit -m "Bump version"
+        git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
