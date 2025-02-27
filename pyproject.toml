@@ -10,6 +10,10 @@ dependencies = [
     "pre-commit>=4.1.0",
 ]
 
+[project.urls]
+Repository = "https://github.com/HYP3R00T/CyberShell.git"
+Issues = "https://github.com/HYP3R00T/CyberShell/issues"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
