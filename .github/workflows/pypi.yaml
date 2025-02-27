@@ -30,10 +30,6 @@ jobs:
     - name: Install the project
       run: uv sync --all-extras --dev
 
-    # Bump the version using bump-my-version tool
-    - name: Bump Version
-      run: ./.venv/bin/bump-my-version bump minor --allow-dirty
-
     # Build the distribution using uv
     - name: Build package
       run: uv build
@@ -43,3 +39,16 @@ jobs:
       env:
         PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       run: uv publish --username __token__ --password $PYPI_TOKEN
+
+    # Bump the version using bump-my-version tool
+    - name: Bump Version
+      run: ./.venv/bin/bump-my-version bump minor --allow-dirty
+
+    # Commit and push the updated version files (e.g. pyproject.toml and uv.lock)
+    - name: Commit bumped version
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add pyproject.toml uv.lock
+        git commit -m "Bump version via bump-my-version [skip ci]" || echo "No changes to commit"
+        git push origin HEAD:main
