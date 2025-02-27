@@ -32,7 +32,7 @@ jobs:
 
     # Bump the version using bump-my-version tool
     - name: Bump Version
-      run: ./.venv/bin/bump-my-version bump minor
+      run: ./.venv/bin/bump-my-version bump minor --allow-dirty
 
     # Build the distribution using uv
     - name: Build package
