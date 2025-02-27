@@ -4,11 +4,18 @@ version = "0.1.3"
 description = "The Shell That Shapes Your Code"
 readme = "README.md"
 requires-python = ">=3.13"
-license = { file = "LICENSE" }
+license = "MIT"
 authors = [{ name = "Hyperoot", email = "rajesh@hyperoot.dev" }]
-dependencies = [
-    "pre-commit>=4.1.0",
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Code Generators",
 ]
+dependencies = ["pre-commit>=4.1.0"]
 
 [project.urls]
 Repository = "https://github.com/HYP3R00T/CyberShell.git"
