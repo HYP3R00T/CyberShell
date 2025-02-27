@@ -1,20 +1,19 @@
 [project]
 name = "cybershell"
-dynamic = ["version"]
+version = "0.1.0"
+# dynamic = ["version"]
 description = "The Shell That Shapes Your Code"
 readme = "README.md"
 requires-python = ">=3.13"
 license = { file = "LICENSE" }
 authors = [{ name = "Hyperoot", email = "rajesh@hyperoot.dev" }]
-dependencies = []
+dependencies = [
+    "bump-my-version>=0.32.2",
+]
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.hatch.version]
-source = "vcs"
-pattern = "v{version}"
 
 [dependency-groups]
 dev = ["ruff>=0.9.7"]

@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
-    tags:
-      - "v*" # Trigger on tag pushes following the vX.Y.Z pattern
 
 jobs:
   build:
+    if: startsWith(github.event.head_commit.message, 'pub')
     runs-on: ubuntu-latest
     steps:
-      # Check out the repository with full history for VCS version detection
+      # Check out the repository with full history for version detection
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -21,23 +20,26 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
-      # Set up python using uv
+      # Set up Python using uv
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version-file: ".python-version"
 
-      # Install uv and any other dependencies
+      # Install project dependencies
       - name: Install the project
         run: uv sync --all-extras --dev
 
-      # Build the distribution using uv (ensure uv is configured to derive the version as needed)
+      # Bump the version using bump-my-version tool
+      - name: Bump Version
+        run: bump-my-version bump minor
+
+      # Build the distribution using uv
       - name: Build package
         run: uv build
 
-      # Publish to PyPI when a tag is pushed; ensure you have set PYPI_USERNAME and PYPI_PASSWORD in secrets
+      # Publish to PyPI using uv
       - name: Publish package to PyPI
-        if: startsWith(github.ref, 'refs/tags/')
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: uv publish --username __token__ --password $PYPI_TOKEN
